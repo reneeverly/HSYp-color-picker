@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="src/HSYToRGB.js"></script>
+<script src="src/colorimetry.js"></script>
+</head>
+<body>
+<canvas id="color-tile" width="255" height="255"></canvas>
+<br>
+<input type="range" min="0" max="255" value="127" class="slider" id="lumaval" onchange="maketile(lumaval.value/255.0)" style="width: 255px;"></input>
+<section>
+<h2>Luma</h2>
+<h3>Select Preset</h3>
+<select onchange="maketile(lumaval.value/255.0)" id="lumaselect">
+<option value="r2020">ITU-R BT.2020-2</option>
+<option value="r709">ITU-R BT.709-6</option>
+<option value="r601">ITU-R BT.601-7</option>
+<option value="smpte240m">SMPTE 240M</option>
+<option value="sgi" selected="true">SGI</option>
+</select>
+<h3>Resultant Luma Values</h3>
+<table>
+<thead>
+   <tr><th>Red</th><th>Green</th><th>Blue</th></tr>
+</thead>
+<tbody>
+   <tr><td id="tred"></td><td id="tgreen"></td><td id="tblue"></td></tr>
+</tbody>
+</table>
+</section>
+<script src="src/maketile.js"></script>
+<script>
+maketile(lumaval.value/255.0)
+</script>
+</body>
+</html>
