@@ -7,11 +7,17 @@
 <body>
 <canvas id="color-tile" width="255" height="255"></canvas>
 <br>
-<input type="range" min="0" max="255" value="127" class="slider" id="lumaval" onchange="maketile(lumaval.value/255.0)" style="width: 255px;"></input>
 <section>
-<h2>Luma</h2>
+<h2>Relative Luminance</h2>
+y': <input type="range" min="0" max="255" value="127" class="slider" id="lumaval" onchange="maketile()" style="width: 255px;"></input>
+<h2>Palette Shape</h2>
+<select onchange="maketile()" id="shaper">
+<option value="circle" selected="true">Circle</option>
+<option value="square">Square</option>
+</select>
+<h2>Luma Configuration</h2>
 <h3>Select Preset</h3>
-<select onchange="maketile(lumaval.value/255.0)" id="lumaselect">
+<select onchange="maketile()" id="lumaselect">
 <option value="r2020">ITU-R BT.2020-2</option>
 <option value="r709">ITU-R BT.709-6</option>
 <option value="r601">ITU-R BT.601-7</option>
@@ -30,7 +36,7 @@
 </section>
 <script src="src/maketile.js"></script>
 <script>
-maketile(lumaval.value/255.0)
+maketile()
 </script>
 </body>
 </html>
