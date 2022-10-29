@@ -3,9 +3,21 @@
 <head>
 <script src="src/HSYToRGB.js"></script>
 <script src="src/colorimetry.js"></script>
+<style>
+* { box-sizing: border-box; }
+.centeredpanel {
+   font-family: sans-serif;
+   border: 1px solid #ccc; background: #efefef;
+   padding: 10px;
+   width: 500px;
+   margin: auto;
+   border-radius: 10px;
+}
+</style>
 </head>
 <body>
-<canvas id="color-tile" width="255" height="255"></canvas>
+<div class="centeredpanel">
+<canvas id="color-tile" width="255" height="255"></canvas><span id="coldump"></span>
 <br>
 <section>
 <h2>Relative Luminance</h2>
@@ -34,6 +46,7 @@ y': <input type="range" min="0" max="255" value="127" class="slider" id="lumaval
 </tbody>
 </table>
 </section>
+</div>
 <script src="src/maketile.js"></script>
 <script>
 maketile()
