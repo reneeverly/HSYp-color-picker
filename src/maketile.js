@@ -10,6 +10,8 @@ function maketile() {
    tblue.innerText = l_luma.B
 
    let y = lumaval.value / 255.0
+   let swapsy = swapcon.checked
+   if (swapsy) {lumavallab.innerHTML = 'Saturation:<br>'} else {lumavallab.innerHTML = 'y\':<br>'}
 
    let shape = shaper.value
 
@@ -21,7 +23,7 @@ function maketile() {
 
    for (var h = 0; h < 255; h += 0.25) {
       for (var s = 0; s < 255; s++) {
-         tri = HSYToRGB(h/255.0, s/255.0, y, l_luma.R, l_luma.G, l_luma.B)
+         tri = HSYToRGB(h/255.0, (swapsy ? y : s/255.0), (swapsy? s/255.0 : y), l_luma.R, l_luma.G, l_luma.B)
          let roundedX, roundedY
          if (shape === 'square') {
             roundedX = Math.round(h)
@@ -46,6 +48,9 @@ function getPickedColor(canv, eve) {
    let x = eve.clientX - rect.left
    let y = eve.clientY - rect.top
 
+   let _y = lumaval.value / 255.0
+   let swapsy = swapcon.checked
+
    let l_luma = {R: luma[lumaselect.value].R, G: luma[lumaselect.value].G, B: luma[lumaselect.value].B}
    let res
    if (shaper.value == 'circle') {
@@ -63,7 +68,7 @@ function getPickedColor(canv, eve) {
 
       res = HSYToRGB(((arctangent / 2.0) / 3.141592653589), Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) / 255.0, lumaval.value / 255.0, l_luma.R, l_luma.G, l_luma.B)
    } else if (shaper.value == 'square') {
-      res = HSYToRGB(x/255.0, y/255.0, lumaval.value / 255.0, l_luma.R, l_luma.G, l_luma.B)
+      res = HSYToRGB(x/255.0, (swapsy ? _y : y/255.0), (swapsy ? y/255.0 : _y), l_luma.R, l_luma.G, l_luma.B)
    }
    console.log(res)
    // Don't forget to delinearize!

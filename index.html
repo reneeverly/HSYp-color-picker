@@ -20,8 +20,9 @@
 <canvas id="color-tile" width="255" height="255"></canvas><span id="coldump"></span>
 <br>
 <section>
-<h2>Relative Luminance</h2>
-y': <input type="range" min="0" max="255" value="127" class="slider" id="lumaval" onchange="maketile()" style="width: 255px;"></input>
+<h2>Control Variable</h2>
+<label for="lumaval" id="lumavallab">y':<br></label><input type="range" min="0" max="255" value="127" class="slider" id="lumaval" onchange="maketile()" style="width: 255px;"></input><br>
+<label for="swapcon">Swap Control Variable:</label><input type="checkbox" id="swapcon" onclick="maketile()"></input>
 <h2>Palette Shape</h2>
 <select onchange="maketile()" id="shaper">
 <option value="circle" selected="true">Circle</option>
