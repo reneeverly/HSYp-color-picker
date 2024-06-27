@@ -9,9 +9,9 @@ function maketile() {
    tgreen.innerText = l_luma.G
    tblue.innerText = l_luma.B
 
-   let y = lumaval.value / 255.0
-   let swapsy = swapcon.checked
-   if (swapsy) {lumavallab.innerHTML = 'Saturation:<br>'} else {lumavallab.innerHTML = 'y\':<br>'}
+   let ctrl_var = lumaval.value / 255.0
+   let swapsy = swapcon.value
+   if (swapsy == 'h') {lumavallab.innerHTML = 'Hue:<br>'} else if (swapsy == 's') { lumavallab.innerHTML = 'Saturation:<br>'} else {lumavallab.innerHTML = 'y\':<br>'}
 
    let shape = shaper.value
 
@@ -21,16 +21,22 @@ function maketile() {
    var newimage = ctx.createImageData(can.width, can.height)
    var newctx = newimage.data
 
-   for (var h = 0; h < 255; h += 0.25) {
-      for (var s = 0; s < 255; s++) {
-         tri = HSYToRGB(h/255.0, (swapsy ? y : s/255.0), (swapsy? s/255.0 : y), l_luma.R, l_luma.G, l_luma.B)
+   for (var plot_x = 0; plot_x < 255; plot_x += 0.25) { // old h
+      for (var plot_y = 0; plot_y < 255; plot_y++) { // old s
+			if (swapsy == 'h') {
+	         tri = HSYToRGB(ctrl_var, plot_x/255.0, plot_y/255.0, l_luma.R, l_luma.G, l_luma.B)
+			} else if (swapsy == 's') {
+	         tri = HSYToRGB(plot_x/255.0, ctrl_var, plot_y/255.0, l_luma.R, l_luma.G, l_luma.B)
+			} else {
+	         tri = HSYToRGB(plot_x/255.0, plot_y/255.0, ctrl_var, l_luma.R, l_luma.G, l_luma.B)
+			}
          let roundedX, roundedY
          if (shape === 'square') {
-            roundedX = Math.round(h)
-            roundedY = Math.round(s)
+            roundedX = Math.round(plot_x)
+            roundedY = Math.round(plot_y)
          } else {
-            roundedX = Math.floor(s / 2.0 * Math.cos(2.0 * 3.141592653589 * (h / 255.0))) + 128
-            roundedY = Math.floor(s / 2.0 * Math.sin(2.0 * 3.141592653589 * (h / 255.0))) + 128
+            roundedX = Math.floor(plot_y / 2.0 * Math.cos(2.0 * 3.141592653589 * (plot_x / 255.0))) + 128
+            roundedY = Math.floor(plot_y / 2.0 * Math.sin(2.0 * 3.141592653589 * (plot_x / 255.0))) + 128
          }
          let index = 4 * (can.width * roundedY + roundedX)
          newctx[index + 0] = Math.round(delinearize(tri[0])*255)
@@ -49,7 +55,7 @@ function getPickedColor(canv, eve) {
    let y = eve.clientY - rect.top
 
    let _y = lumaval.value / 255.0
-   let swapsy = swapcon.checked
+   let swapsy = swapcon.value
 
    let l_luma = {R: luma[lumaselect.value].R, G: luma[lumaselect.value].G, B: luma[lumaselect.value].B}
    let res
@@ -66,9 +72,21 @@ function getPickedColor(canv, eve) {
          arctangent += 2 * 3.141592653589
       }
 
-      res = HSYToRGB(((arctangent / 2.0) / 3.141592653589), Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) / 255.0, lumaval.value / 255.0, l_luma.R, l_luma.G, l_luma.B)
+		if (swapsy == 'h') {
+      	res = HSYToRGB(lumaval.value / 255.0, ((arctangent / 2.0) / 3.141592653589), Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) / 255.0, l_luma.R, l_luma.G, l_luma.B)
+		} else if (swapsy == 's') {
+     	 	res = HSYToRGB(((arctangent / 2.0) / 3.141592653589), lumaval.value / 255.0, Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) / 255.0, l_luma.R, l_luma.G, l_luma.B)
+		} else {
+     	 	res = HSYToRGB(((arctangent / 2.0) / 3.141592653589), Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) / 255.0, lumaval.value / 255.0, l_luma.R, l_luma.G, l_luma.B)
+		}
    } else if (shaper.value == 'square') {
-      res = HSYToRGB(x/255.0, (swapsy ? _y : y/255.0), (swapsy ? y/255.0 : _y), l_luma.R, l_luma.G, l_luma.B)
+		if (swapsy == 'h') {
+      	res = HSYToRGB(_y, x/255.0, y/255.0, l_luma.R, l_luma.G, l_luma.B)
+		} else if (swapsy == 's') {
+      	res = HSYToRGB(x/255.0, _y, y/255.0, l_luma.R, l_luma.G, l_luma.B)
+		} else {
+      	res = HSYToRGB(x/255.0, y/255.0, _y, l_luma.R, l_luma.G, l_luma.B)
+		}
    }
    console.log(res)
    // Don't forget to delinearize!

@@ -21,8 +21,8 @@
 <br>
 <section>
 <h2>Control Variable</h2>
-<label for="lumaval" id="lumavallab">y':<br></label><input type="range" min="0" max="255" value="127" class="slider" id="lumaval" onchange="maketile()" style="width: 255px;"></input><br>
-<label for="swapcon">Swap Control Variable:</label><input type="checkbox" id="swapcon" onclick="maketile()"></input>
+<label for="lumaval" id="lumavallab">y':<br></label><input type="range" min="0" max="255" value="127" class="slider" id="lumaval" onchange="maketile(); lumaval_text.value = this.value" style="width: 255px;"></input><input type="text" id="lumaval_text" onchange="lumaval.value = this.value;maketile()" value="127"></input><br>
+<label for="swapcon">Control Variable:</label><select id="swapcon" onchange="maketile();"><option value="h">H</option><option value="s">S</option><option value="y" selected>Y'</option></select>
 <h2>Palette Shape</h2>
 <select onchange="maketile()" id="shaper">
 <option value="circle" selected="true">Circle</option>
