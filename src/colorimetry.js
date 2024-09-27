@@ -14,8 +14,8 @@
  */
 
 // ITU-R BT.2020-2: Page 4: Table 4
-let a = 1.0993
-let b = 0.0181
+var a = 1.0993
+var b = 0.0181
 function delinearize(E) {
    if (E < b) {
       return 4.500 * E

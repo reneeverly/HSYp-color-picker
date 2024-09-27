@@ -3,17 +3,18 @@
 
 var can = document.getElementById('color-tile')
 
+
 function maketile() {
-   let l_luma = {R: luma[lumaselect.value].R, G: luma[lumaselect.value].G, B: luma[lumaselect.value].B}
+   var l_luma = {R: luma[lumaselect.value].R, G: luma[lumaselect.value].G, B: luma[lumaselect.value].B}
    tred.innerText = l_luma.R
    tgreen.innerText = l_luma.G
    tblue.innerText = l_luma.B
 
-   let ctrl_var = lumaval.value / 255.0
-   let swapsy = swapcon.value
+   var ctrl_var = lumaval.value / 255.0
+   var swapsy = swapcon.value
    if (swapsy == 'h') {lumavallab.innerHTML = 'Hue:<br>'} else if (swapsy == 's') { lumavallab.innerHTML = 'Saturation:<br>'} else {lumavallab.innerHTML = 'y\':<br>'}
 
-   let shape = shaper.value
+   var shape = shaper.value
 
    var ctx = can.getContext('2d', {colorSpace: "srgb"})
    var tri
@@ -30,7 +31,7 @@ function maketile() {
 			} else {
 	         tri = HSYToRGB(plot_x/255.0, plot_y/255.0, ctrl_var, l_luma.R, l_luma.G, l_luma.B)
 			}
-         let roundedX, roundedY
+         var roundedX, roundedY
          if (shape === 'square') {
             roundedX = Math.round(plot_x)
             roundedY = Math.round(plot_y)
@@ -38,7 +39,7 @@ function maketile() {
             roundedX = Math.floor(plot_y / 2.0 * Math.cos(2.0 * 3.141592653589 * (plot_x / 255.0))) + 128
             roundedY = Math.floor(plot_y / 2.0 * Math.sin(2.0 * 3.141592653589 * (plot_x / 255.0))) + 128
          }
-         let index = 4 * (can.width * roundedY + roundedX)
+         var index = 4 * (can.width * roundedY + roundedX)
          newctx[index + 0] = Math.round(delinearize(tri[0])*255)
          newctx[index + 1] = Math.round(delinearize(tri[1])*255)
          newctx[index + 2] = Math.round(delinearize(tri[2])*255)
@@ -50,20 +51,20 @@ function maketile() {
 }
 
 function getPickedColor(canv, eve) {
-   let rect = canv.getBoundingClientRect()
-   let x = eve.clientX - rect.left
-   let y = eve.clientY - rect.top
+   var rect = canv.getBoundingClientRect()
+   var x = eve.clientX - rect.left
+   var y = eve.clientY - rect.top
 
-   let _y = lumaval.value / 255.0
-   let swapsy = swapcon.value
+   var _y = lumaval.value / 255.0
+   var swapsy = swapcon.value
 
-   let l_luma = {R: luma[lumaselect.value].R, G: luma[lumaselect.value].G, B: luma[lumaselect.value].B}
-   let res
+   var l_luma = {R: luma[lumaselect.value].R, G: luma[lumaselect.value].G, B: luma[lumaselect.value].B}
+   var res
    if (shaper.value == 'circle') {
       x = (x - 128) * 2
       y = (y - 128) * 2
       console.log(x, y)
-      let arctangent = Math.atan(y / x)
+      var arctangent = Math.atan(y / x)
 
       /* Convert arctan regions into position accurate positive numbers */
       if (x < 0) {
@@ -95,3 +96,9 @@ function getPickedColor(canv, eve) {
 }
 
 can.addEventListener('mousedown', function(e) { getPickedColor(can, e) })
+
+// FF12 polyfill for IDs as identifiers
+var windowids = document.querySelectorAll('*[id]')
+for (var i = 0; i < windowids.length; i++) {
+	window[windowids[i].id] = windowids[i]
+}
